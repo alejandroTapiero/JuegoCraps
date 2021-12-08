@@ -12,20 +12,22 @@ package juegoCraps;
  */
 
 
-public class modelCraps {
+public class ModelCraps {
     private Dado dado1, dado2;
     private int tiro, punto, estado, flag;
-    private String estadotoString;
+    private String[] estadotoString;
     private int[] caras;
 
     /**
      * Class Constructor
      */
 
-    public modelCraps(){
+    public ModelCraps(){
         dado1 = new Dado();
         dado2 = new Dado();
         caras = new int[2];
+        estadotoString = new String[2];
+        flag = 0;
     }
 
     /**
@@ -51,7 +53,7 @@ public class modelCraps {
                 estado = 1;
             }
             else {
-                if (tiro == 2 || tiro == 3){
+                if (tiro == 2 || tiro == 3 || tiro == 12){
                     estado = 2;
                 }
                 else{
@@ -78,9 +80,14 @@ public class modelCraps {
             estado = 4;
             flag = 0;
         }
-        if (tiro == 7){
-            estado = 5;
-            flag = 0;
+        else{
+            if (tiro == 7){
+                estado = 5;
+                flag = 0;
+            }
+            else{
+                estado = 6;
+            }
         }
     }
 
@@ -97,19 +104,32 @@ public class modelCraps {
      * @return message for the View class
      */
 
-    public String getEstadotoString() {
+    public String[] getEstadotoString() {
         switch(estado){
-            case 1: estadotoString = "¡Un natural! ¡Felicidades! Has ganado.";
-            break;
-            case 2: estadotoString = "Es un craps. Has perdido, suerte para la próxima.";
+            case 1: estadotoString[0] = "Tiro de salida: " + tiro;
+                estadotoString[1] = "¡Un natural! ¡Felicidades! Has ganado.";
                 break;
-            case 3: estadotoString = "Has establecido un punto en " +punto+ ". ¡Sigue lanzando!" +
-                "\n Cuidado, no saques un 7 antes que " +punto+ ". No querrás perder, ¿eh?";
+            case 2: estadotoString[0] = "Tiro de salida: " + tiro;
+                estadotoString[1] = "Es un craps. Has perdido, suerte para la próxima.";
                 break;
-            case 4: estadotoString = "Parece que volviste a sacar un " +punto+ "¡Felicidades! Has ganado.";
+            case 3: estadotoString[0] = "Tiro de salida: " + tiro + "\nPunto: " + punto;
+                estadotoString[1] = "Has establecido un punto en " +punto+ ". ¡Sigue lanzando!" +
+                "\nCuidado, no saques un 7 antes que " +punto+ ". No querrás perder, ¿eh?";
                 break;
-            case 5: estadotoString = "¿Eso es un 7 antes que " +punto+ "? Te lo advertí."+
-                    "\n Lo siento, reglas son reglas. Has perdido, suerte para la próxima.";
+            case 4: estadotoString[0] = "Tiro de salida: " + tiro + "\nPunto: " + punto +
+                                        "\nValor del punto: " + tiro;
+                estadotoString[1] = "Parece que volviste a sacar un " +punto+
+                "\n¡Felicidades! Has ganado.";
+                break;
+            case 5: estadotoString[0] = "Tiro de salida: " + tiro + "\nPunto: " + punto +
+                                        "\nValor del punto: " + tiro;
+                estadotoString[1] = "¿Eso es un 7 antes que " +punto+ "? Te lo advertí."+
+                "\n Lo siento, reglas son reglas. Has perdido, suerte para la próxima.";
+                break;
+            case 6: estadotoString[0] = "Tiro de salida: " + tiro + "\nPunto: " + punto +
+                    "\nValor del punto: " + tiro;
+                estadotoString[1] = "Sigues en punto. ¡Vamos, lanza de nuevo!" +
+                        "\nCuidado, no saques un 7 antes que " +punto+ ". No querrás perder, ¿eh?";
                 break;
         }
         return estadotoString;
